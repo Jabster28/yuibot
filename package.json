@@ -1,9 +1,9 @@
 {
-  "name": "bot-example",
+  "name": "yuibot",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "start": "tsc -w",
+    "start": "yarn build && node dist/index.js",
     "build": "tsc",
     "bump": "yarn build && standard-version && git push --follow-tags origin master"
   },
