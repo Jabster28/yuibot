@@ -3,19 +3,21 @@ import * as toHex from "colornames";
 import axios from "axios";
 
 const prefix = '-';
-
+let myID: string = "myIDHere" // TODO: replace with your Snowflake
+let muteRole: string = "mutedRoleIDHere" // TODO: replace with Snowflake of mute role
+let adminRole: string = "mutedRoleIDHere" // TODO: replace with Snowflake of admin role
 export const data = {
   prefix: prefix,
   hiddencommands: {
     coffee: {
       // makes you admin :)
       run: function (msg: Discord.Message) {
-        console.log(msg.member.id);
+        console.log(msg.member?.id);
         return new Promise(function (s) {
-          if (msg.member.id === "yourIDHere") { // TODO: replace with your Snowflake
-            msg.member.addRole("adminRoleIDHere") // TODO: replace with Snowflake of admin role
+          if (msg.member?.id === myID) {
+            msg.member?.roles.add(adminRole)
             msg.delete()
-            console.log(msg.guild.roles);
+            console.log(msg.guild!.roles);
             s()
           }
         });
@@ -29,7 +31,7 @@ export const data = {
       run: function (msg: Discord.Message, args: Array<string>) {
         return new Promise(function (res) {
           let reason;
-          if (!msg.member.hasPermission("MANAGE_ROLES")) {
+          if (!msg.member?.hasPermission("MANAGE_ROLES")) {
             msg.channel.send("Sorry, Only mods can do this.");
           }
           if (args.length > 1) {
@@ -37,16 +39,14 @@ export const data = {
           } else {
             reason = "";
           }
-          let usr = msg.mentions.members.first();
+          let usr = msg.mentions.members?.first();
           console.log(usr);
-          usr.removeRoles(usr.roles).then(function () {
-            usr.addRole("muteRoleIDHere"); // TODO: replace with Snowflake of role that can't talk
-          });
-          let embed = new Discord.RichEmbed();
+          usr?.roles.set([muteRole]);
+          let embed = new Discord.MessageEmbed();
           // @ts-ignore
           embed.setColor(toHex("mint"));
-          embed.setTitle("Banishing " + usr.user.username);
-          embed.setDescription(`Banished ${usr.user.tag}.${reason}`);
+          embed.setTitle("Banishing " + usr?.user.username);
+          embed.setDescription(`Banished ${usr?.user.tag}.${reason}`);
           embed.setFooter("Bot made by YourTag#H3R3"); // TODO: put your tag here
           msg.channel.send(embed).then(res)
         });
@@ -56,7 +56,7 @@ export const data = {
       desc: "Shows all commands.",
       run: function (msg: Discord.Message) {
         return new Promise(function (res) {
-          let embed = new Discord.RichEmbed();
+          let embed = new Discord.MessageEmbed();
           // @ts-ignore
           embed.setColor(toHex("gray"));
           embed.setTitle("A bot"); // TODO: replace with bot name

@@ -4,7 +4,9 @@ import * as Discord from "discord.js"
 import { data } from "./data"
 import * as env from "dotenv"
 const getArguments = function (x: Discord.Message) {
-  x.content.split(" ").shift()
+  let w = x.content.split(" ")
+  w.shift()
+  return w
 };
 env.config()
 
@@ -16,7 +18,7 @@ const token = process.env.TOKEN;
 
 client.on('ready', function () {
   console.log("Hacking the mainframe with an identity of:");
-  console.log(client.user.username);
+  console.log(client.user?.username);
   console.log("I'm in");
 });
 
