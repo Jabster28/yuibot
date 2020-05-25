@@ -18,7 +18,7 @@
     "axios": "0.19.2",
     "colornames": "1.1.1",
     "commitizen": "4.1.2",
-    "discord.js": "11.6.4",
+    "discord.js": "12.2.0",
     "express": "4.17.1"
   },
   "devDependencies": {
