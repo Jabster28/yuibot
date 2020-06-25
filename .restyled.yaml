@@ -1,6 +1,7 @@
 restylers: # <-- restylers key
   - name: prettier
-    arguments:
+    command:
+      - prettier
       - '--check'
     include:
       - 'src/'
