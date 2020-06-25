@@ -10,7 +10,7 @@ declare type command = {
   args?: string;
 };
 // {[key: string]: command}
-const prefix = '-';
+const prefix = "+";
 const myID = 'myIDHere'; // TODO: replace with your Snowflake
 const muteRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of mute role
 const adminRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of admin role
