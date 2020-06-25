@@ -1,0 +1,9 @@
+                      # <-- top-level document
+restylers:            # <-- restylers key
+  - prettier:
+      command:
+      - prettier
+      - "--write"
+      - "src/**/*.ts"
+      arguments: []
+      interpreters: []
