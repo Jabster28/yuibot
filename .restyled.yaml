@@ -1,0 +1,7 @@
+---
+image: restyled/restyler-prettier:v2.0.2-1
+command:
+- prettier
+- "--write"
+include:
+- "src/**/*.ts"
