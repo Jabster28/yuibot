@@ -13,11 +13,6 @@
     "pretest": "yarn run compile",
     "posttest": "yarn test"
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
     "@types/colornames": "1.1.1",
