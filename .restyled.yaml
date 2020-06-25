@@ -3,5 +3,5 @@ restylers: # <-- restylers key
     arguments:
       - '--write'
     include:
-      - 'src/**/*.ts'
+      - 'src/'
     interpreters: []
