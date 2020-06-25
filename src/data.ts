@@ -1,4 +1,4 @@
-import * as Discord from 'discord.js';
+import * as Discord from "discord.js";
 import * as toHex from 'colornames';
 declare type command = {
   run: (
