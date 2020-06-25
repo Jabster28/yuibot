@@ -1,7 +1,8 @@
-name: prettier
-command:
-  - prettier
-  - '--write'
-include:
-  - 'src/'
-interpreters: []
+restylers:
+  - name: prettier
+    command:
+      - prettier
+      - '--write'
+    include:
+      - 'src/'
+    interpreters: []
