@@ -2,7 +2,7 @@ restylers: # <-- restylers key
   - name: prettier
     command:
       - prettier
-      - '--check'
+      - '--write'
     include:
       - 'src/'
     interpreters: []
