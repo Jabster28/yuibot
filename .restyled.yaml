@@ -1,7 +1,9 @@
-image: restyled/restyler-prettier:v2.0.2-1
-command:
-- prettier
-- "--write"
-- "src/**/*.ts"
-arguments: []
-interpreters: []
+                      # <-- top-level document
+restylers:            # <-- restylers key
+  - prettier:
+      command:
+      - prettier
+      - "--write"
+      - "src/**/*.ts"
+      arguments: []
+      interpreters: []
