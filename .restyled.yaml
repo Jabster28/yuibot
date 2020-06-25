@@ -2,7 +2,6 @@ image: restyled/restyler-prettier:v2.0.2-1
 command:
 - prettier
 - "--write"
-arguments: []
-include:
 - "src/**/*.ts"
+arguments: []
 interpreters: []
