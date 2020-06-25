@@ -3,9 +3,15 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "start": "yarn build && node dist/index.js",
-    "build": "tsc",
-    "bump": "yarn build && standard-version && git push --follow-tags origin master"
+    "start": "yarn compile && node dist/index.js",
+    "bump": "yarn compile && standard-version && git push --follow-tags origin master",
+    "test": "gts check",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "yarn run compile",
+    "pretest": "yarn run compile",
+    "posttest": "yarn test"
   },
   "husky": {
     "hooks": {
@@ -13,22 +19,30 @@
     }
   },
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
     "@types/colornames": "1.1.1",
     "@types/node": "14.0.14",
     "@types/ws": "7.2.5",
     "axios": "0.19.2",
     "colornames": "1.1.1",
+    "colors": "^1.4.0",
     "commitizen": "4.1.2",
     "discord.js": "12.2.0",
-    "express": "4.17.1"
+    "express": "4.17.1",
+    "ffmpeg-static": "^4.2.3",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "@commitlint/cli": "9.0.1",
     "@commitlint/config-conventional": "9.0.1",
+    "@types/node": "^13.11.1",
     "cz-conventional-changelog": "3.2.0",
-    "dotenv": "8.2.0",
+    "dotenv": "^8.2.0",
+    "gts": "^2.0.2",
     "husky": "4.2.5",
-    "standard-version": "8.0.0"
+    "standard-version": "8.0.0",
+    "ts-node-dev": "1.0.0-pre.44",
+    "typescript": "^3.9.3"
   },
   "config": {
     "commitizen": {

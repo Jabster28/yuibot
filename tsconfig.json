@@ -1,15 +1,8 @@
 {
+  "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noImplicitAny": true,
-    "strict": true,
-    "removeComments": true,
-    "sourceMap": true,
-    "outDir": "dist",
+    "rootDir": "src/",
+    "outDir": "dist/"
   },
-  "include": [
-    "src/index.ts"
-  ],
+  "include": ["src/**/*.ts", "test/**/*.ts"]
 }
