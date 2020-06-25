@@ -36,7 +36,7 @@
     "gts": "2.0.2",
     "husky": "4.2.5",
     "standard-version": "8.0.0",
-    "ts-node-dev": "1.0.0-pre.44",
+    "ts-node-dev": "1.0.0-pre.49",
     "typescript": "3.9.3"
   },
   "config": {
