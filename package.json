@@ -18,7 +18,7 @@
     "@types/colornames": "1.1.1",
     "@types/node": "14.0.14",
     "@types/ws": "7.2.5",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "colornames": "1.1.1",
     "colors": "1.4.0",
     "commitizen": "4.1.2",
