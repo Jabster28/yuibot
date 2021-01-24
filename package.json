@@ -23,7 +23,7 @@
     "axios": "0.21.1",
     "colornames": "1.1.1",
     "colors": "1.4.0",
-    "commitizen": "4.1.2",
+    "commitizen": "4.2.3",
     "discord.js": "12.5.1",
     "express": "4.17.1",
     "ffmpeg-static": "4.2.7",
