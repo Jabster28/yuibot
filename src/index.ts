@@ -1,7 +1,7 @@
 // TODO: change name & others in package.json
 // import * as toHex from 'colornames';
 import * as Discord from 'discord.js';
-import {data, command} from './data';
+import { data, command } from './data';
 // eslint-disable-next-line node/no-unpublished-import
 import * as env from 'dotenv';
 const getArguments = function (x: Discord.Message) {

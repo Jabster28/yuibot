@@ -1,4 +1,4 @@
-import Discord, {MessageEmbed} from 'discord.js';
+import Discord, { MessageEmbed } from 'discord.js';
 import toHex from 'colornames';
 import axios from 'axios';
 import FormData from 'form-data';
@@ -198,7 +198,7 @@ export const data: {
           embed.setDescription(
             "Hi there! I'm Yui, and I'm here to help you with anything you may need!"
           );
-          const ref: {[key: string]: command} = data.commands;
+          const ref: { [key: string]: command } = data.commands;
           let k: string;
           for (k in ref) {
             const v = ref[k];
