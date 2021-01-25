@@ -100,6 +100,34 @@ export const data: {
         });
       },
     },
+    stfu: {
+      desc: 'Please, just SHUT UP! Requires manage roles permission.',
+      args: '(@user) [on/off]',
+      run: async function (msg, args) {
+        let reason;
+        const chan = msg.channel;
+        if (!msg.member?.hasPermission('MANAGE_ROLES')) {
+          msg.channel.send("Woah, you're not a mod, dude.");
+        }
+        if (args?.length > 1) {
+          reason = ' Reason: <' + args?.splice(1).join(' ') + '>';
+        } else {
+          reason = '';
+        }
+        const usr = msg.mentions.members?.first();
+        if (args[2]) {
+          console.log('a');
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          // @ts-ignore
+          clearInterval(+args[2]);
+        } else {
+          console.log('b');
+          setInterval(() => {
+            usr?.voice.connection?.disconnect();
+          }, 50);
+        }
+      },
+    },
     shh: {
       desc: 'Sleepy time for you. Requires manage roles permission.',
       args: '(@user)',
@@ -148,7 +176,7 @@ export const data: {
         }
         const usr = msg.mentions.members?.first();
         console.log(usr);
-        usr?.roles.set([muteRole]);
+        usr?.roles.remove([muteRole]);
         const embed = new Discord.MessageEmbed();
         embed.setColor(toHex('mistyrose')!);
         embed.setTitle('_Go to sleep, ' + usr?.user.username + '_');
