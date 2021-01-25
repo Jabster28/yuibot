@@ -29,7 +29,7 @@
     "ffmpeg-static": "4.2.7",
     "form-data": "^3.0.0",
     "request": "^2.88.2",
-    "socket.io": "2.4.0"
+    "socket.io": "2.4.1"
   },
   "devDependencies": {
     "@commitlint/cli": "11.0.0",
