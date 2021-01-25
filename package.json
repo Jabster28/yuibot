@@ -26,9 +26,9 @@
     "discord.js": "12.5.1",
     "express": "4.17.1",
     "ffmpeg-static": "4.2.3",
-    "form-data": "3.0.0",
-    "request": "2.88.2",
-    "socket.io": "2.3.0"
+    "form-data": "^3.0.0",
+    "request": "^2.88.2",
+    "socket.io": "2.4.0"
   },
   "devDependencies": {
     "@commitlint/cli": "9.1.2",
