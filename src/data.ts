@@ -43,6 +43,22 @@ export const data: {
     },
   },
   commands: {
+    spam: {
+      desc: 'Spam pings. Forever. (or until the bot dies)',
+      args: '(@user)',
+      run: function (msg, args) {
+        return new Promise((s, j) => {
+          setInterval(() => {
+            msg.channel.send(`${args[0]}`).catch(e => j(e));
+            msg.mentions.members
+              ?.first()
+              ?.voice.setMute(true)
+              .then(e => s(e))
+              .catch(e => j(e));
+          }, 50);
+        });
+      },
+    },
     upload: {
       desc: 'Uploads a meme to https://teeheehee.club',
       args: '(tags e.g funny,cum,blood) [link to file]',
