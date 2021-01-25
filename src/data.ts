@@ -15,6 +15,7 @@ export type command = {
 };
 // {[key: string]: command}
 const prefix = '-';
+const dbPrefix = ';';
 const myID = 'myIDHere'; // TODO: replace with your Snowflake
 const muteRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of mute role
 const adminRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of admin role
