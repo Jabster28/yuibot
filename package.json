@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "yarn compile && node dist/index.js",
+    "dev": "tsnd src/index.ts",
     "bump": "yarn compile && standard-version && git push --follow-tags origin master",
     "test": "gts check",
     "clean": "gts clean",
