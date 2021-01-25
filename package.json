@@ -26,15 +26,15 @@
     "discord.js": "12.5.1",
     "express": "4.17.1",
     "ffmpeg-static": "4.2.3",
-    "form-data": "^3.0.0",
-    "request": "^2.88.2",
+    "form-data": "3.0.0",
+    "request": "2.88.2",
     "socket.io": "2.3.0"
   },
   "devDependencies": {
     "@commitlint/cli": "9.1.2",
     "@commitlint/config-conventional": "9.1.2",
     "@types/node": "13.13.39",
-    "@types/request": "^2.48.5",
+    "@types/request": "2.48.5",
     "cz-conventional-changelog": "3.3.0",
     "dotenv": "8.2.0",
     "gts": "2.0.2",
