@@ -43,6 +43,14 @@ export const data: {
     },
   },
   commands: {
+    // unmute: {
+    //   desc: '',
+    //   args: '',
+    //   run: async function (msg, args) {
+    //     msg.mentions.members?.first()?.voice.setMute(false);
+    //     msg.delete();
+    //   },
+    // },
     spam: {
       desc: 'Spam pings. Forever. (or until the bot dies)',
       args: '(@user)',
@@ -97,7 +105,40 @@ export const data: {
       args: '(@user)',
       run: async function (msg, args) {
         let reason;
-        if (!msg.member?.hasPermission('MANAGE_ROLES')) {
+        if (
+          !msg.member?.hasPermission('MANAGE_ROLES') &&
+          msg.author.id !== myID
+        ) {
+          msg.channel.send("Woah, you're not a mod, dude. Sorry :/");
+        }
+        if (args?.length > 1) {
+          reason = ' Reason: <' + args?.splice(1).join(' ') + '>';
+        } else {
+          reason = '';
+        }
+        const usr = msg.mentions.members?.first();
+        console.log(usr);
+        usr?.roles.add([muteRole]);
+        const embed = new Discord.MessageEmbed();
+        embed.setColor(toHex('mistyrose')!);
+        embed.setTitle('_Go to sleep, ' + usr?.user.username + '_');
+        embed.setDescription(
+          `${usr?.user.tag} has been put to sleep.${reason}`
+        );
+        embed.setFooter('Bot made by Jabster28#6048');
+        msg.channel.send(embed);
+      },
+    },
+    wake: {
+      desc:
+        'Chucks water on top of the user. Requires manage roles permission.',
+      args: '(@user)',
+      run: async function (msg, args) {
+        let reason;
+        if (
+          !msg.member?.hasPermission('MANAGE_ROLES') &&
+          msg.author.id !== myID
+        ) {
           msg.channel.send("Woah, you're not a mod, dude. Sorry :/");
         }
         if (args?.length > 1) {
