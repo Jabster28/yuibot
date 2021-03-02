@@ -35,7 +35,7 @@
   "devDependencies": {
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-conventional": "11.0.0",
-    "@types/app-root-path": "^1.2.4",
+    "@types/app-root-path": "1.2.4",
     "@types/node": "13.13.45",
     "@types/request": "2.48.5",
     "cz-conventional-changelog": "3.3.0",
