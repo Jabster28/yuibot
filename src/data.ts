@@ -53,8 +53,8 @@ export const data: {
     //   },
     // },
     spam: {
-      desc: 'Spam pings. Forever. (or until the bot dies)',
-      args: '(@user)',
+      desc: 'Spams. Forever. (or until the bot dies)',
+      args: '(anything)',
       run: function (msg, args) {
         return new Promise((s, j) => {
           setInterval(() => {
@@ -115,7 +115,26 @@ export const data: {
         } else {
           reason = '';
         }
-        const usr = msg.mentions.members?.first();
+
+        let usr = msg.mentions.members?.first();
+        if (!usr) {
+          msg.guild?.members
+            .fetch(args[0])
+            .then(e => {
+              if (e.id.trim() !== '') usr = e;
+            })
+            .catch(e => {
+              const embed = new Discord.MessageEmbed();
+              embed.setColor(toHex('red')!);
+              embed.setTitle('Error');
+              embed.setDescription(
+                "No user specified. Please mention or use a user's ID to put to sleep."
+              );
+              embed.setFooter('Bot made by Jabster28#6048');
+              return msg.channel.send(embed);
+            });
+          return;
+        }
         if (args[2]) {
           console.log('a');
           // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -145,7 +164,26 @@ export const data: {
         } else {
           reason = '';
         }
-        const usr = msg.mentions.members?.first();
+        let usr = msg.mentions.members?.first();
+        if (!usr) {
+          msg.guild?.members
+            .fetch(args[0])
+            .then(e => {
+              if (e.id.trim() != '') usr = e;
+            })
+            .catch(e => {
+              const embed = new Discord.MessageEmbed();
+              embed.setColor(toHex('red')!);
+              embed.setTitle('Error');
+              embed.setDescription(
+                "No user specified. Please mention or use a user's ID to put to sleep."
+              );
+              embed.setFooter('Bot made by Jabster28#6048');
+              return msg.channel.send(embed);
+            });
+          return;
+        }
+
         console.log(usr);
         usr?.roles.add([muteRole]);
         const embed = new Discord.MessageEmbed();
@@ -155,7 +193,7 @@ export const data: {
           `${usr?.user.tag} has been put to sleep.${reason}`
         );
         embed.setFooter('Bot made by Jabster28#6048');
-        msg.channel.send(embed);
+        return msg.channel.send(embed);
       },
     },
     wake: {
@@ -175,7 +213,25 @@ export const data: {
         } else {
           reason = '';
         }
-        const usr = msg.mentions.members?.first();
+        let usr = msg.mentions.members?.first();
+        if (!usr) {
+          msg.guild?.members
+            .fetch(args[0])
+            .then(e => {
+              if (e.id.trim() !== '') usr = e;
+            })
+            .catch(e => {
+              const embed = new Discord.MessageEmbed();
+              embed.setColor(toHex('red')!);
+              embed.setTitle('Error');
+              embed.setDescription(
+                "No user specified. Please mention or use a user's ID to put to sleep."
+              );
+              embed.setFooter('Bot made by Jabster28#6048');
+              return msg.channel.send(embed);
+            });
+          return;
+        }
         console.log(usr);
         usr?.roles.remove([muteRole]);
         const embed = new Discord.MessageEmbed();
