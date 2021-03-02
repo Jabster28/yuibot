@@ -4,12 +4,13 @@ import * as Discord from 'discord.js';
 import { data, command } from './data';
 // eslint-disable-next-line node/no-unpublished-import
 import * as env from 'dotenv';
+import appPath from 'app-root-path';
 const getArguments = function (x: Discord.Message) {
   const w = x.content.split(' ');
   w.shift();
   return w;
 };
-env.config();
+env.config({ path: appPath + '/.env' });
 
 const client = new Discord.Client();
 const prefix = data.prefix;
