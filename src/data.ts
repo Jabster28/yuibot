@@ -70,7 +70,7 @@ export const data: {
     },
     upload: {
       desc: 'Uploads a meme to https://teeheehee.club',
-      args: '(tags e.g funny,cum,blood) [link to file]',
+      args: '(tags e.g funny,oreo,blood) [link to file]',
       run: function (msg, args) {
         return new Promise((s, j) => {
           //
