@@ -56,5 +56,38 @@ client.on('message', msg => {
   }
   return results;
 });
-
+// allow for edited commands to be ran too
+client.on('messageUpdate', async (_old, newmsg) => {
+  // uncache new messages
+  const msg = newmsg.partial ? await newmsg.fetch() : newmsg;
+  const args = getArguments(msg);
+  let v: command, k: string;
+  for (k in commands) {
+    v = commands[k];
+    if (msg.content.split(' ')[0].toLowerCase() === prefix + k) {
+      v.run(msg, args, client);
+    } else if (msg.content.split(' ')[0].toLowerCase() === db + k) {
+      v.run(msg, args, client)
+        .then((e: any) => {
+          msg.channel.send(e);
+        })
+        .catch(e => {
+          msg.channel.send(e);
+        });
+    }
+  }
+  const results = [];
+  for (k in hiddencommands) {
+    if (msg.author.bot) {
+      return;
+    }
+    v = hiddencommands[k];
+    if (msg.content.split(' ')[0].toLowerCase() === k) {
+      results.push(v.run(msg, args, client));
+    } else {
+      results.push(void 0);
+    }
+  }
+  return results;
+});
 client.login(token);
