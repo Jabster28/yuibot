@@ -47,7 +47,6 @@ export type command = {
 // {[key: string]: command}
 const prefix = '-';
 const dbPrefix = ';';
-const muted: Record<string, { server: string; index: NodeJS.Timeout }> = {};
 const myID = 'myIDHere'; // TODO: replace with your Snowflake
 const muteRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of mute role
 const adminRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of admin role
@@ -86,21 +85,21 @@ export const data: {
     //     msg.delete();
     //   },
     // },
-    stopspam: {
+    stopSpam: {
       desc: "Stops the spam. You're welcome",
       run: async function (msg) {
         spamInts.forEach(e => clearInterval(e));
         return msg.react('✅');
       },
     },
-    autoafk: {
+    autoAfk: {
       desc:
         'Automatically moves deafened users in the server to the AFK channel.',
       args: '[disable]',
       run: async function (msg, args) {
         if (args.length === 0) {
           afkInts[msg?.guild?.id || 'undef'] = setInterval(() => {
-            const x = msg.guild?.channels.cache.forEach(e => {
+            msg.guild?.channels.cache.forEach(e => {
               if (e.type === 'voice' && e.id !== e.guild.afkChannelID) {
                 e.members.forEach(f => {
                   if (f.voice.deaf) {
@@ -191,7 +190,7 @@ export const data: {
             .then(e => {
               if (e.id.trim() !== '') usr = e;
             })
-            .catch(e => {
+            .catch(() => {
               const embed = new Discord.MessageEmbed();
               embed.setColor(toHex('red')!);
               embed.setTitle('Error');
@@ -240,7 +239,7 @@ export const data: {
             .then(e => {
               if (e.id.trim() !== '') usr = e;
             })
-            .catch(e => {
+            .catch(() => {
               const embed = new Discord.MessageEmbed();
               embed.setColor(toHex('red')!);
               embed.setTitle('Error');
