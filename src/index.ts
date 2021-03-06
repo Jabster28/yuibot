@@ -35,9 +35,12 @@ client.on('message', msg => {
   let v: command, k: string;
   for (k in commands) {
     v = commands[k];
-    if (msg.content.split(' ')[0].toLowerCase() === prefix + k) {
+    if (msg.content.split(' ')[0].toLowerCase() === prefix + k.toLowerCase()) {
       v.run(msg, args, client);
-    } else if (msg.content.split(' ')[0].toLowerCase() === db + k) {
+    } else if (
+      msg.content.split(' ')[0].toLowerCase() ===
+      db + k.toLowerCase()
+    ) {
       v.run(msg, args, client)
         .then((e: any) => {
           msg.channel.send(e);
@@ -53,7 +56,7 @@ client.on('message', msg => {
       return;
     }
     v = hiddencommands[k];
-    if (msg.content.split(' ')[0].toLowerCase() === k) {
+    if (msg.content.split(' ')[0].toLowerCase() === k.toLowerCase()) {
       results.push(v.run(msg, args, client));
     } else {
       results.push(void 0);
@@ -69,9 +72,12 @@ client.on('messageUpdate', async (_old, newmsg) => {
   let v: command, k: string;
   for (k in commands) {
     v = commands[k];
-    if (msg.content.split(' ')[0].toLowerCase() === prefix + k) {
+    if (msg.content.split(' ')[0].toLowerCase() === prefix + k.toLowerCase()) {
       v.run(msg, args, client);
-    } else if (msg.content.split(' ')[0].toLowerCase() === db + k) {
+    } else if (
+      msg.content.split(' ')[0].toLowerCase() ===
+      db + k.toLowerCase()
+    ) {
       v.run(msg, args, client)
         .then((e: any) => {
           msg.channel.send(e);
@@ -87,7 +93,7 @@ client.on('messageUpdate', async (_old, newmsg) => {
       return;
     }
     v = hiddencommands[k];
-    if (msg.content.split(' ')[0].toLowerCase() === k) {
+    if (msg.content.split(' ')[0].toLowerCase() === k.toLowerCase()) {
       results.push(v.run(msg, args, client));
     } else {
       results.push(void 0);
