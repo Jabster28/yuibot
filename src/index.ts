@@ -1,10 +1,13 @@
 // TODO: change name & others in package.json
 // import * as toHex from 'colornames';
 import * as Discord from 'discord.js';
-import { data, command } from './data';
+import { data, command, logger } from './data';
 // eslint-disable-next-line node/no-unpublished-import
 import * as env from 'dotenv';
 import appPath from 'app-root-path';
+
+// logging
+
 const getArguments = function (x: Discord.Message) {
   const w = x.content.split(' ');
   w.shift();
@@ -20,9 +23,11 @@ const hiddencommands = data.hiddencommands;
 const token = process.env.TOKEN;
 
 client.on('ready', () => {
-  console.log('Hacking the mainframe with an identity of:');
-  console.log(client.user?.username);
-  console.log("I'm in");
+  logger.info(
+    'Joining the multiverse under the name: ' +
+      `${client.user?.username}#${client.user?.discriminator}` || 'undef'
+  );
+  logger.info('Integration complete.');
 });
 
 client.on('message', msg => {
