@@ -168,63 +168,6 @@ export const data: {
     //     });
     //   },
     // },
-    stfu: {
-      desc:
-        'Please, just SHUT UP! Blocks the target from joining any VC in the server. Requires manage roles permission.',
-      args: '(@target) [disable]',
-      run: async function (msg, args) {
-        let reason;
-        const chan = msg.channel;
-        if (!msg.member?.hasPermission('MANAGE_ROLES')) {
-          msg.channel.send("Woah, you're not a mod, dude.");
-        }
-
-        let usr = msg.mentions.members?.first();
-        if (!usr) {
-          msg.guild?.members
-            .fetch(args[0])
-            .then(e => {
-              if (e.id.trim() !== '') usr = e;
-            })
-            .catch(e => {
-              const embed = new Discord.MessageEmbed();
-              embed.setColor(toHex('red')!);
-              embed.setTitle('Error');
-              embed.setDescription(
-                "No user specified. Please mention or use a user's ID to put to sleep."
-              );
-              embed.setFooter('Bot made by Jabster28#6048');
-              return msg.channel.send(embed);
-            });
-          return;
-        }
-        // TODO: why doesn't args work properly here
-        const arrgs = msg.content.split(' ');
-        arrgs.shift();
-        if (arrgs[1]) {
-          console.log('ending ban');
-          clearInterval(muted[usr.id].index);
-          delete muted[usr.id];
-          return msg.react('🛑');
-        } else {
-          console.log('starting ban for ' + usr.id);
-          const w = setInterval(async () => {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-            // @ts-ignore
-            const x: Discord.GuildMember = await msg.guild?.members.fetch(usr);
-            if (
-              x.voice.channel &&
-              x.voice.channel.guild.id === muted[x.id].server
-            ) {
-              console.log(`kicking ${x.id} from vc`);
-              x?.voice.kick();
-            }
-          }, 1200);
-          muted[usr.id] = { server: msg.guild?.id!, index: w };
-          return msg.react('✅');
-        }
-      },
-    },
     shh: {
       desc: 'Sleepy time for you. Requires manage roles permission.',
       args: '(@user)',
