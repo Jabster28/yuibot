@@ -53,6 +53,7 @@ const dbPrefix = ';';
 const myID = 'myIDHere'; // TODO: replace with your Snowflake
 const muteRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of mute role
 const adminRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of admin role
+const spamInts: NodeJS.Timeout[] = [];
 export const data: {
   hiddencommands: Record<string, command>;
   commands: Record<string, command>;
@@ -86,12 +87,19 @@ export const data: {
     //     msg.delete();
     //   },
     // },
+    stopspam: {
+      desc: "Stops the spam. You're welcome",
+      run: async function (msg) {
+        spamInts.forEach(e => clearInterval(e));
+        return msg.react('✅');
+      },
+    },
     spam: {
       desc: 'Spams. Forever. (or until the bot dies)',
       args: '(anything)',
       run: function (msg, args) {
         return new Promise((s, j) => {
-          setInterval(() => {
+          const x = setInterval(() => {
             msg.channel.send(`${args[0]}`).catch(e => j(e));
             msg.mentions.members
               ?.first()
@@ -99,6 +107,8 @@ export const data: {
               .then(e => s(e))
               .catch(e => j(e));
           }, 50);
+          spamInts.push(x);
+          return x;
         });
       },
     },
