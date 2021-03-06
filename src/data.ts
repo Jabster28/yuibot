@@ -134,7 +134,7 @@ export const data: {
       desc:
         'Automatically moves deafened users in the server to the AFK channel.',
       args: '[disable]',
-      run: async function (msg, args) {
+      run: async function (msg, args, client) {
         if (args.length === 0) {
           afkInts[msg?.guild?.id || 'undef'] = setInterval(() => {
             msg.guild?.channels.cache.forEach(e => {
@@ -171,7 +171,7 @@ export const data: {
           const int = setInterval(async () => {
             const w = (await sentMsg.fetch()).reactions;
             w.cache.forEach(async e => {
-              if (!(await e.users.fetch()).find(e => e.id === msg.author.id))
+              if (!(await e.users.fetch()).find(e => e.id !== client?.user?.id))
                 return;
               if (e.emoji.name === '🛑') {
                 await w.removeAll();
