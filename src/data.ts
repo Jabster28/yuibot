@@ -52,6 +52,7 @@ const myID = 'myIDHere'; // TODO: replace with your Snowflake
 const muteRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of mute role
 const adminRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of admin role
 const spamInts: NodeJS.Timeout[] = [];
+const afkInts: Record<string, NodeJS.Timeout> = {};
 export const data: {
   hiddencommands: Record<string, command>;
   commands: Record<string, command>;
@@ -90,6 +91,29 @@ export const data: {
       run: async function (msg) {
         spamInts.forEach(e => clearInterval(e));
         return msg.react('✅');
+      },
+    },
+    autoafk: {
+      desc:
+        'Automatically moves deafened users in the server to the AFK channel.',
+      args: '[disable]',
+      run: async function (msg, args) {
+        if (args.length === 0) {
+          afkInts[msg?.guild?.id || 'undef'] = setInterval(() => {
+            const x = msg.guild?.channels.cache.forEach(e => {
+              if (e.type === 'voice' && e.id !== e.guild.afkChannelID) {
+                e.members.forEach(f => {
+                  if (f.voice.deaf) {
+                    f.voice.setChannel(e.guild.afkChannelID);
+                  }
+                });
+              }
+            });
+          }, 1200);
+        } else {
+          clearInterval(afkInts[msg?.guild?.id || 'undef']);
+          delete afkInts[msg?.guild?.id || 'undef'];
+        }
       },
     },
     spam: {
