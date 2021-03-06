@@ -34,7 +34,39 @@ export type command = {
   desc?: string;
   args?: string;
 };
+process.stdin.resume();
+const onexit: Record<string, () => Promise<void>> = {};
+async function asyncForEach(
+  array: unknown[],
+  callback: (item: any, index: number, array: unknown[]) => Promise<void>
+) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
+function exitHandler(_options: unknown, exitCode: number) {
+  if (exitCode === 0) {
+    return;
+  }
+  console.log('\n');
+  logger.warn('Exit requested, doing cleanup.');
+  asyncForEach(Object.keys(onexit), async (e, i, a) => {
+    await onexit[e]();
+    logger.info(Object.keys(a).length - 1 - i + ' cleanup operations left.');
+  }).then(() => {
+    logger.info('Done.');
+    // eslint-disable-next-line no-process-exit
+    process.exit(0);
+  });
+}
+
+process.on('exit', exitHandler.bind(null, { cleanup: true }));
+process.on('SIGINT', exitHandler.bind(null, { exit: true }));
+process.on('SIGUSR1', exitHandler.bind(null, { exit: true }));
+process.on('SIGUSR2', exitHandler.bind(null, { exit: true }));
+
 // {[key: string]: command}
+const maxlist = 10;
 const prefix = '-';
 const dbPrefix = ';';
 const myID = 'myIDHere'; // TODO: replace with your Snowflake
@@ -42,6 +74,22 @@ const muteRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of mute role
 const adminRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of admin role
 const spamInts: NodeJS.Timeout[] = [];
 const afkInts: Record<string, NodeJS.Timeout> = {};
+const allInts: NodeJS.Timeout[] = [];
+const eventify = function (arr: unknown[], callback: () => void) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  arr.push = function (e) {
+    Array.prototype.push.call(arr, e);
+    callback();
+  };
+};
+eventify(allInts, () => {
+  logger.info('New listener, now at ' + allInts.length);
+  if (allInts.length > maxlist) {
+    logger.warn(`Hit ${maxlist} concurrent listeners, clearing the first one`);
+    clearInterval(allInts.shift()!);
+  }
+});
 export const data: {
   hiddencommands: Record<string, command>;
   commands: Record<string, command>;
@@ -99,6 +147,84 @@ export const data: {
               }
             });
           }, 1200);
+          const embed = new Discord.MessageEmbed();
+          embed.setColor(toHex('lime')!);
+          embed.setTitle('Enabled');
+          embed.setDescription(
+            'Enabled Auto AFK. Use the reactions to disable.  '
+          );
+          embed.setFooter('Bot made by Jabster28#6048');
+          const sentMsg = await msg.channel.send(embed);
+          sentMsg.react('🛑');
+          onexit[sentMsg.id] = async () => {
+            const embed = new Discord.MessageEmbed();
+            embed.setColor(toHex('mistyrose')!);
+            embed.setTitle('R.I.P');
+            embed.setDescription(
+              "Bot has shut down. Please retry the command once it's online."
+            );
+            embed.setFooter('Bot made by Jabster28#6048');
+            await sentMsg.reactions.removeAll();
+            await sentMsg.edit(embed);
+            logger.info('Cleared up ' + sentMsg.id);
+          };
+          const int = setInterval(async () => {
+            const w = (await sentMsg.fetch()).reactions;
+            w.cache.forEach(async e => {
+              if (!(await e.users.fetch()).find(e => e.id === msg.author.id))
+                return;
+              if (e.emoji.name === '🛑') {
+                await w.removeAll();
+                clearInterval(afkInts[msg?.guild?.id || 'undef']);
+                delete afkInts[msg?.guild?.id || 'undef'];
+                const embed = new Discord.MessageEmbed();
+                embed.setColor(toHex('salmon')!);
+                embed.setTitle('Disabled');
+                embed.setDescription(
+                  'Disabled Auto AFK. Use the reactions to enable.  '
+                );
+                embed.setFooter('Bot made by Jabster28#6048');
+                await sentMsg.edit(embed);
+                await sentMsg.react('▶️');
+              } else if (e.emoji.name === '▶️') {
+                await w.removeAll();
+                afkInts[msg?.guild?.id || 'undef'] = setInterval(() => {
+                  msg.guild?.channels.cache.forEach(e => {
+                    if (e.type === 'voice' && e.id !== e.guild.afkChannelID) {
+                      e.members.forEach(f => {
+                        if (f.voice.deaf) {
+                          f.voice.setChannel(e.guild.afkChannelID);
+                        }
+                      });
+                    }
+                  });
+                }, 1200);
+                allInts.push(afkInts[msg?.guild?.id || 'undef']);
+                const embed = new Discord.MessageEmbed();
+                embed.setColor(toHex('lime')!);
+                embed.setTitle('Enabled');
+                embed.setDescription(
+                  'Enabled Auto AFK. Use the reactions to disable.  '
+                );
+                embed.setFooter('Bot made by Jabster28#6048');
+                await sentMsg.edit(embed);
+                await sentMsg.react('🛑');
+              }
+            });
+          }, 1200);
+          allInts.push(int);
+          setTimeout(() => {
+            clearInterval(int);
+            const embed = new Discord.MessageEmbed();
+            embed.setColor(toHex('gray')!);
+            embed.setTitle('N/A');
+            embed.setDescription(
+              'AutoAFK reactions expired. Please run AutoAFK again to re-enable reactions'
+            );
+            embed.setFooter('Bot made by Jabster28#6048');
+            sentMsg.edit(embed);
+            delete onexit[sentMsg.id];
+          }, 300000);
         } else {
           clearInterval(afkInts[msg?.guild?.id || 'undef']);
           delete afkInts[msg?.guild?.id || 'undef'];
