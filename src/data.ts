@@ -50,6 +50,7 @@ export type command = {
 // {[key: string]: command}
 const prefix = '-';
 const dbPrefix = ';';
+const muted: Record<string, { server: string; index: NodeJS.Timeout }> = {};
 const myID = 'myIDHere'; // TODO: replace with your Snowflake
 const muteRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of mute role
 const adminRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of admin role
@@ -147,18 +148,14 @@ export const data: {
     //   },
     // },
     stfu: {
-      desc: 'Please, just SHUT UP! Requires manage roles permission.',
-      args: '(@user) [on/off]',
+      desc:
+        'Please, just SHUT UP! Blocks the target from joining any VC in the server. Requires manage roles permission.',
+      args: '(@target) [disable]',
       run: async function (msg, args) {
         let reason;
         const chan = msg.channel;
         if (!msg.member?.hasPermission('MANAGE_ROLES')) {
           msg.channel.send("Woah, you're not a mod, dude.");
-        }
-        if (args?.length > 1) {
-          reason = ' Reason: <' + args?.splice(1).join(' ') + '>';
-        } else {
-          reason = '';
         }
 
         let usr = msg.mentions.members?.first();
@@ -180,16 +177,30 @@ export const data: {
             });
           return;
         }
-        if (args[2]) {
-          console.log('a');
-          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-          // @ts-ignore
-          clearInterval(+args[2]);
+        // TODO: why doesn't args work properly here
+        const arrgs = msg.content.split(' ');
+        arrgs.shift();
+        if (arrgs[1]) {
+          console.log('ending ban');
+          clearInterval(muted[usr.id].index);
+          delete muted[usr.id];
+          return msg.react('🛑');
         } else {
-          console.log('b');
-          setInterval(() => {
-            usr?.voice.connection?.disconnect();
-          }, 50);
+          console.log('starting ban for ' + usr.id);
+          const w = setInterval(async () => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
+            const x: Discord.GuildMember = await msg.guild?.members.fetch(usr);
+            if (
+              x.voice.channel &&
+              x.voice.channel.guild.id === muted[x.id].server
+            ) {
+              console.log(`kicking ${x.id} from vc`);
+              x?.voice.kick();
+            }
+          }, 1200);
+          muted[usr.id] = { server: msg.guild?.id!, index: w };
+          return msg.react('✅');
         }
       },
     },
@@ -214,7 +225,7 @@ export const data: {
           msg.guild?.members
             .fetch(args[0])
             .then(e => {
-              if (e.id.trim() != '') usr = e;
+              if (e.id.trim() !== '') usr = e;
             })
             .catch(e => {
               const embed = new Discord.MessageEmbed();
