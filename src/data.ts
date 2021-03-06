@@ -112,39 +112,40 @@ export const data: {
         });
       },
     },
-    upload: {
-      desc: 'Uploads a meme to https://teeheehee.club',
-      args: '(tags e.g funny,oreo,blood) [link to file]',
-      run: function (msg, args) {
-        return new Promise((s, j) => {
-          //
-          const attachment = args[1] || msg.attachments.array()[0].proxyURL;
-          console.log(attachment);
-          request.get(attachment, (e, r, b) => {
-            //
-            if (!e && r.statusCode === 200) {
-              const file = new FormData();
-              file.append('upload_file', b);
-              axios
-                .post('https://teeheehee.club/upload.php', file, {
-                  headers: {
-                    ...file.getHeaders(),
-                  },
-                })
-                .then(e => {
-                  msg.channel.send('Uploaded!');
-                  s(JSON.stringify(e));
-                })
-                .catch(e => {
-                  msg.channel.send("Uh oh! There's an error:");
-                  console.log(e);
-                  j(JSON.stringify(e));
-                });
-            }
-          });
-        });
-      },
-    },
+    // TODO: fix this
+    // upload: {
+    //   desc: 'Uploads a meme to https://teeheehee.club',
+    //   args: '(tags e.g funny,oreo,blood) [link to file]',
+    //   run: function (msg, args) {
+    //     return new Promise((s, j) => {
+    //       //
+    //       const attachment = args[1] || msg.attachments.array()[0].proxyURL;
+    //       console.log(attachment);
+    //       request.get(attachment, (e, r, b) => {
+    //         //
+    //         if (!e && r.statusCode === 200) {
+    //           const file = new FormData();
+    //           file.append('upload_file', b);
+    //           axios
+    //             .post('https://teeheehee.club/upload.php', file, {
+    //               headers: {
+    //                 ...file.getHeaders(),
+    //               },
+    //             })
+    //             .then(e => {
+    //               msg.channel.send('Uploaded!');
+    //               s(JSON.stringify(e));
+    //             })
+    //             .catch(e => {
+    //               msg.channel.send("Uh oh! There's an error:");
+    //               console.log(e);
+    //               j(JSON.stringify(e));
+    //             });
+    //         }
+    //       });
+    //     });
+    //   },
+    // },
     stfu: {
       desc: 'Please, just SHUT UP! Requires manage roles permission.',
       args: '(@user) [on/off]',
