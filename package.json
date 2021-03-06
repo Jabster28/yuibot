@@ -39,6 +39,7 @@
     "@types/app-root-path": "1.2.4",
     "@types/node": "13.13.45",
     "@types/request": "2.48.5",
+    "@types/winston": "^2.4.4",
     "cz-conventional-changelog": "3.3.0",
     "dotenv": "8.2.0",
     "gts": "2.0.2",

@@ -1,8 +1,5 @@
 import Discord from 'discord.js';
 import toHex from 'colornames';
-import axios from 'axios';
-import FormData from 'form-data';
-import request from 'request';
 import { createLogger, format, transports } from 'winston';
 
 export const logger = createLogger({
@@ -107,7 +104,7 @@ export const data: {
               ?.voice.setMute(true)
               .then(e => s(e))
               .catch(e => j(e));
-          }, 50);
+          }, 1000);
           spamInts.push(x);
           return x;
         });
