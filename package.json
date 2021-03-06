@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "start": "yarn compile && node dist/index.js",
+    "start": "ts-node src/index.ts",
     "dev": "tsnd src/index.ts",
     "bump": "yarn compile && standard-version && git push --follow-tags origin master",
     "test": "gts check",
