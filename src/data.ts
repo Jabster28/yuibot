@@ -75,6 +75,7 @@ const adminRole = 'mutedRoleIDHere'; // TODO: replace with Snowflake of admin ro
 const spamInts: NodeJS.Timeout[] = [];
 const afkInts: Record<string, NodeJS.Timeout> = {};
 const allInts: NodeJS.Timeout[] = [];
+const afkKids: Record<string, string> = {};
 const eventify = function (arr: unknown[], callback: () => void) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
@@ -141,7 +142,15 @@ export const data: {
               if (e.type === 'voice' && e.id !== e.guild.afkChannelID) {
                 e.members.forEach(f => {
                   if (f.voice.deaf) {
+                    afkKids[f.id] = f.voice.channelID || '';
                     f.voice.setChannel(e.guild.afkChannelID);
+                  }
+                });
+              } else if (e.type === 'voice') {
+                e.members.forEach(f => {
+                  if (!f.voice.deaf && afkKids[f.id]) {
+                    f.voice.setChannel(afkKids[f.id]);
+                    delete afkKids[f.id];
                   }
                 });
               }
