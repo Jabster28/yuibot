@@ -21,7 +21,7 @@
     "@types/ws": "7.4.0",
     "app-root-path": "^3.0.0",
     "colornames": "1.1.1",
-    "discord.js": "12.5.1",
+    "discord.js": "12.5.2",
     "winston": "^3.3.3"
   },
   "devDependencies": {
