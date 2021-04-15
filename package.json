@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@types/colornames": "1.1.1",
-    "@types/node": "14.14.39",
+    "@types/node": "14.14.40",
     "@types/ws": "7.4.1",
     "app-root-path": "^3.0.0",
     "colornames": "1.1.1",
