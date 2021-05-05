@@ -31,7 +31,7 @@
     "@types/node": "13.13.51",
     "@types/winston": "2.4.4",
     "cz-conventional-changelog": "3.3.0",
-    "dotenv": "8.5.1",
+    "dotenv": "8.6.0",
     "gts": "2.0.2",
     "husky": "4.3.8",
     "standard-version": "9.3.0",
